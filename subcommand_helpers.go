@@ -405,7 +405,7 @@ func processImages(d *dither.Ditherer, c *cli.Context) error {
 		} else if loopCount != 0 {
 			// The CLI flag is equal to the number of times looped
 			// But for gif.GIF.LoopCount, "the animation is looped LoopCount+1 times."
-			loopCount -= 1
+			loopCount--
 		}
 		animGIF = gif.GIF{
 			Image:     frames,
