@@ -36,6 +36,10 @@ func main() {
 				Aliases:  []string{"p"},
 				Required: true,
 			},
+			&cli.IntFlag{
+				Name:    "paletteSize",
+				Aliases: []string{"k"},
+			},
 			&cli.BoolFlag{
 				Name:    "grayscale",
 				Aliases: []string{"g"},
