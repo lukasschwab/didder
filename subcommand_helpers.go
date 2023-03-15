@@ -148,9 +148,11 @@ func extractInputPalette(flag string, c *cli.Context) ([]color.Color, error) {
 	// https://github.com/mccutchen/palettor/blob/3eaed180/cmd/palettor/palettor.go#L57
 	thumbnail := imaging.Resize(img, 200, 200, imaging.NearestNeighbor)
 
-	// TODO: make these settings configurable, particularly the number of colors
-	// in the palette. That means threading the argument through the CLI.
-	palette, err := palettor.Extract(5, 500, thumbnail)
+	k := c.Int("paletteSize")
+	if k == 0 {
+		k = 5
+	}
+	palette, err := palettor.Extract(k, 500, thumbnail)
 	if err != nil {
 		return nil, fmt.Errorf("error extracting image palette: %w", err)
 	}
