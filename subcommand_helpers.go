@@ -23,6 +23,10 @@ import (
 	"golang.org/x/image/colornames"
 )
 
+const (
+	defaultExtractedPaletteSize = 5
+)
+
 // parsePercentArg takes a string like "0.5" or "50%" and will return a float
 // like 50 or 0.5, depending on the second argument. An empty string returns 0.
 //
@@ -149,8 +153,9 @@ func extractInputPalette(flag string, c *cli.Context) ([]color.Color, error) {
 	thumbnail := imaging.Resize(img, 200, 200, imaging.NearestNeighbor)
 
 	k := c.Int("paletteSize")
-	if k == 0 {
-		k = 5
+	if k < 2 {
+		k = defaultExtractedPaletteSize
+		log.Printf("Must have at least two-color palette; defaulting to %v", k)
 	}
 	palette, err := palettor.Extract(k, 500, thumbnail)
 	if err != nil {
