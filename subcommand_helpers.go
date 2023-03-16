@@ -17,8 +17,8 @@ import (
 	"strings"
 
 	"github.com/disintegration/imaging"
+	"github.com/joshdk/quantize"
 	"github.com/makeworld-the-better-one/dither/v2"
-	"github.com/mccutchen/palettor"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/image/colornames"
 )
@@ -157,13 +157,25 @@ func extractInputPalette(flag string, c *cli.Context) ([]color.Color, error) {
 		k = defaultExtractedPaletteSize
 		log.Printf("Must have at least two-color palette; defaulting to %v", k)
 	}
-	palette, err := palettor.Extract(k, 500, thumbnail)
-	if err != nil {
-		return nil, fmt.Errorf("error extracting image palette: %w", err)
+
+	qcolors := quantize.Image(thumbnail, k)
+	log.Printf("Got colors: %v", k)
+
+	colors := make([]color.Color, len(qcolors))
+	for i, c := range qcolors {
+		colors[i] = c
+		log.Printf("#%x%x%x", c.R, c.G, c.B)
 	}
 
-	log.Printf("Extracted palette: %v", palette.Colors())
-	return palette.Colors(), nil
+	cymk := []color.Color{
+		color.CMYK{0xff, 0, 0, 0},
+		color.CMYK{0, 0xff, 0, 0},
+		color.CMYK{0, 0, 0xff, 0},
+		color.CMYK{0, 0, 0, 0xff},
+	}
+
+	log.Printf("Extracted palette: %v", colors)
+	return cymk, nil
 }
 
 // parseColors takes args and turns them into a color slice. All returned

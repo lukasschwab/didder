@@ -5,6 +5,8 @@ github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/disintegration/imaging v1.6.2 h1:w1LecBlG2Lnp8B3jk5zSuNqd7b4DXhcjwek1ei82L+c=
 github.com/disintegration/imaging v1.6.2/go.mod h1:44/5580QXChDfwIclfc/PCwrr44amcmDAg8hxG0Ewe4=
+github.com/joshdk/quantize v0.0.0-20171110221748-65999d3a4c76 h1:e8dYMoMgTRUSrG/uOHRS0Bwj82/7DQemLuw7GS+PsKw=
+github.com/joshdk/quantize v0.0.0-20171110221748-65999d3a4c76/go.mod h1:zrvWZKXVf8MDtGvHkoK00CJ62mZtdU2oUTr3xBlxa+s=
 github.com/makeworld-the-better-one/dither/v2 v2.3.0 h1:s9wgm88KFZSzvZh9gL79tPayp5sDUGIku/1aJewxlB4=
 github.com/makeworld-the-better-one/dither/v2 v2.3.0/go.mod h1:VBtN8DXO7SNtyGmLiGA7IsFeKrBkQPze1/iAeM95arc=
 github.com/mccutchen/palettor v1.0.0 h1:YRNAzEZlRBnu8qP/9siuNTJiAj7VhL0dEQ1AQmu9jew=
