@@ -16,9 +16,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/RobCherry/vibrant"
 	"github.com/disintegration/imaging"
 	"github.com/makeworld-the-better-one/dither/v2"
-	"github.com/mccutchen/palettor"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/image/colornames"
 )
@@ -150,20 +150,26 @@ func extractInputPalette(flag string, c *cli.Context) ([]color.Color, error) {
 
 	// Resize: keep palettor.Extract fast. See the palettor CLI source:
 	// https://github.com/mccutchen/palettor/blob/3eaed180/cmd/palettor/palettor.go#L57
-	thumbnail := imaging.Resize(img, 200, 200, imaging.NearestNeighbor)
+	// thumbnail := imaging.Resize(img, 200, 200, imaging.NearestNeighbor)
 
-	k := c.Int("paletteSize")
-	if k < 2 {
-		k = defaultExtractedPaletteSize
-		log.Printf("Must have at least two-color palette; defaulting to %v", k)
-	}
-	palette, err := palettor.Extract(k, 500, thumbnail)
-	if err != nil {
-		return nil, fmt.Errorf("error extracting image palette: %w", err)
+	palette := vibrant.NewPaletteBuilder(img).Generate()
+	log.Printf("Got %v swatches: %v", len(palette.Swatches()), palette.Swatches())
+
+	// Issue: these can be null.
+	colors := []color.Color{
+		palette.VibrantSwatch().Color(),
+		palette.DarkVibrantSwatch().Color(),
+		palette.LightVibrantSwatch().Color(),
+		palette.MutedSwatch().Color(),
+		palette.LightMutedSwatch().Color(),
+		palette.DarkMutedSwatch().Color(),
+		// Experimental: force-include black and white as base colors.
+		colornames.Black,
+		colornames.White,
 	}
 
-	log.Printf("Extracted palette: %v", palette.Colors())
-	return palette.Colors(), nil
+	log.Printf("Extracted palette: %v", colors)
+	return colors, nil
 }
 
 // parseColors takes args and turns them into a color slice. All returned
