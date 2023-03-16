@@ -158,24 +158,29 @@ func extractInputPalette(flag string, c *cli.Context) ([]color.Color, error) {
 		log.Printf("Must have at least two-color palette; defaulting to %v", k)
 	}
 
-	qcolors := quantize.Image(thumbnail, k)
-	log.Printf("Got colors: %v", k)
-
-	colors := make([]color.Color, len(qcolors))
-	for i, c := range qcolors {
-		colors[i] = c
-		log.Printf("#%x%x%x", c.R, c.G, c.B)
+	// If we want K colors, take the log_2 of k and round up.
+	levels := math.Ceil(math.Log2(float64(k)))
+	qcolors := quantize.Image(thumbnail, int(levels))
+	colors := make([]color.Color, k)
+	for i := 0; i < k; i++ {
+		colors[i] = qcolors[len(qcolors)-1-i]
 	}
 
-	cymk := []color.Color{
-		color.CMYK{0xff, 0, 0, 0},
-		color.CMYK{0, 0xff, 0, 0},
-		color.CMYK{0, 0, 0xff, 0},
-		color.CMYK{0, 0, 0, 0xff},
-	}
+	// TODO: these colors are ordered by luminosity or something, so we wind up
+	// losing meaningful detail by sampling from one side.
+	//
+	// Yeah, the real issue here is taking ceil of log_2. If you want three
+	// colors, you wind up selecting three colors *from an eight-color extracted
+	// palette.* That's really partial. Then your performance gets better until
+	// you get to 9 colors, which is half of a 16-color palette.
+	//
+	// And still, everything seems pretty muddy.
+	//
+	// Maybe it'd be better to have a fixed sampling of colors (more than just
+	// CYMK) and then discarding the ones with the least K-means value?
 
 	log.Printf("Extracted palette: %v", colors)
-	return cymk, nil
+	return colors, nil
 }
 
 // parseColors takes args and turns them into a color slice. All returned
