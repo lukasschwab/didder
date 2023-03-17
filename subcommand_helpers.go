@@ -162,8 +162,13 @@ func extractInputPalette(flag string, c *cli.Context) ([]color.Color, error) {
 		return nil, fmt.Errorf("error extracting image palette: %w", err)
 	}
 
+	colors := make([]color.Color, len(palette.Colors()))
+	for i, c := range palette.Colors() {
+		colors[i] = c
+	}
+
 	log.Printf("Extracted palette: %v", palette.Colors())
-	return palette.Colors(), nil
+	return colors, nil
 }
 
 // parseColors takes args and turns them into a color slice. All returned

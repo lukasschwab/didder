@@ -9,3 +9,5 @@ require (
 	github.com/urfave/cli/v2 v2.3.0
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb
 )
+
+replace github.com/mccutchen/palettor => github.com/lukasschwab/palettor v0.0.0-20230316235041-2b9eefb7d776
