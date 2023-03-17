@@ -10,4 +10,4 @@ require (
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb
 )
 
-replace github.com/mccutchen/palettor => github.com/lukasschwab/palettor v0.0.0-20230317081300-4c22e29748ac
+replace github.com/mccutchen/palettor => github.com/lukasschwab/palettor v0.0.0-20230317173216-77a4d54847da
